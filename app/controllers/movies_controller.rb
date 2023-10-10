@@ -4,9 +4,7 @@ class MoviesController < ApplicationController
   end
 
   def index
-    matching_movies = Movie.all
-
-    @list_of_movies = matching_movies.order(created_at: :desc)
+    @list_of_movies = Movie.order(created_at: :desc)
 
     respond_to do |format|
       format.json do
@@ -32,7 +30,7 @@ class MoviesController < ApplicationController
 
     if @the_movie.valid?
       @the_movie.save
-      redirect_to movies_url, notice: "Movie created successfully."
+      redirect_to("/movies", { :notice => "Movie created successfully." })
     else
       render "new"
     end
@@ -48,16 +46,16 @@ class MoviesController < ApplicationController
 
   def update
     the_id = params.fetch(:id)
-    the_movie = Movie.where(id: the_id).first
+    @the_movie = Movie.where(id: the_id).first
 
-    the_movie.title = params.fetch("query_title")
-    the_movie.description = params.fetch("query_description")
+    @the_movie.title = params.fetch("query_title")
+    @the_movie.description = params.fetch("query_description")
 
-    if the_movie.valid?
-      the_movie.save
-      redirect_to movie_url(the_movie), notice: "Movie updated successfully."
+    if @the_movie.valid?
+      @the_movie.save
+      redirect_to movie_url(@the_movie), notice: "Movie updated successfully."
     else
-      redirect_to movie_url(the_movie), alert: "Movie failed to update successfully."
+      render "edit"
     end
   end
 
