@@ -2,16 +2,16 @@
 desc "Fill the database tables with some sample data"
 task({ :sample_data => :environment }) do
     # Create sample directors
-    # 5.times do
-    #   Director.create(
-    #     name: Faker::Name.name,
-    #     bio: Faker::Lorem.paragraph,
-    #     dob: Faker::Date.birthday(min_age: 25, max_age: 70)
-    #   )
-    # end
+    50.times do
+      Director.create(
+        name: Faker::Name.name,
+        bio: Faker::Lorem.paragraph,
+        dob: Faker::Date.birthday(min_age: 25, max_age: 70)
+      )
+    end
 
     # Create sample movies
-    10.times do
+    50.times do
       Movie.create(
         title: Faker::Movie.title,
         description: Faker::Lorem.paragraph,
