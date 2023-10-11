@@ -20,15 +20,39 @@ class DirectorsController < ApplicationController
   end
 
   def create
-    @director = Director.new
-  end
+    director_attributes = params.require(:director).permit(:name, :dob, :bio)
+    @director = Director.new(director_attributes)
 
-  def update
+    if @director.valid?
+      @director.save
+      redirect_to "/directors", :notice => "Director created successfully."
+    else
+      render "new"
+    end
   end
 
   def edit
+    @director = Director.find(params.fetch(:id))
+  end
+
+  def update
+    @director = Director.find(params.fetch(:id))
+    
+    director_attributes = params.require(:director).permit(:name, :dob, :bio)
+    @director.update(director_attributes)
+
+    if @director.valid?
+      @director.save
+      redirect_to "/directors", :notice => "Director updated successfully."
+    else
+      render "edit"
+    end
   end
 
   def destroy
+    director = Director.find(params.fetch(:id))
+    director.destroy
+
+    redirect_to directors_url, notice: "Director deleted successfully"
   end
 end
